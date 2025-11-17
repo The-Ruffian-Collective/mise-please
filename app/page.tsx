@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       <header className="bg-[var(--card)] border-b border-[var(--border)] p-4">
-        <h1 className="text-3xl font-bold">Mise en Place</h1>
+        <h1 className="text-3xl font-bold">Mise Please</h1>
       </header>
 
       <main className="flex-1 p-6 max-w-4xl w-full mx-auto">
