@@ -1,4 +1,4 @@
-# Mise en Place - Kitchen Prep Task Manager
+# Mise Please - Kitchen Prep Task Manager
 
 A simple, fast web app for restaurant kitchens to manage daily prep tasks.
 
