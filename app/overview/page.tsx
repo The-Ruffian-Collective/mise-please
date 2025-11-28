@@ -15,6 +15,7 @@ export default function OverviewPage() {
   const [stations, setStations] = useState<Station[]>([])
   const [selectedDate, setSelectedDate] = useState<string>('')
   const [loading, setLoading] = useState(true)
+  const [deletingId, setDeletingId] = useState<number | null>(null)
 
   useEffect(() => {
     // Set default date to tomorrow
@@ -59,6 +60,24 @@ export default function OverviewPage() {
       console.error('Error fetching tasks:', error)
     } finally {
       setLoading(false)
+    }
+  }
+
+  async function handleDelete(taskId: number) {
+    if (!confirm('Delete this task?')) return
+    setDeletingId(taskId)
+    try {
+      const response = await fetch(`/api/tasks/${taskId}`, { method: 'DELETE' })
+      if (response.ok) {
+        fetchTasks()
+      } else {
+        alert('Failed to delete task')
+      }
+    } catch (error) {
+      console.error('Error:', error)
+      alert('Error deleting task')
+    } finally {
+      setDeletingId(null)
     }
   }
 
@@ -159,12 +178,20 @@ export default function OverviewPage() {
                       {stationTasks.map((task) => (
                         <div
                           key={task.id}
-                          className={`p-4 rounded border ${
+                          className={`p-4 rounded border relative ${
                             task.priority === 'high'
                               ? 'border-[var(--warning)] bg-[var(--warning)]/10'
                               : 'border-[var(--border)]'
                           }`}
                         >
+                          <button
+                            onClick={() => handleDelete(task.id)}
+                            disabled={deletingId === task.id}
+                            className="absolute top-3 right-3 p-2 text-[var(--danger)] hover:bg-[var(--danger)]/10 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            aria-label="Delete task"
+                          >
+                            ×
+                          </button>
                           <div className="flex items-start gap-3">
                             {task.priority === 'high' && (
                               <span className="px-2 py-1 text-sm font-semibold bg-[var(--warning)] text-white rounded">
