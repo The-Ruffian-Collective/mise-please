@@ -12,6 +12,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 # Start development server (runs on http://localhost:3000)
 npm run dev
 
+# Alternative: Use Vercel CLI for local dev with Vercel Postgres
+# Install: npm i -g vercel
+# Then: vercel link (first time only)
+vercel dev
+
 # Build for production
 npm run build
 
@@ -24,6 +29,8 @@ npm run lint
 # Type checking (no script defined, run directly)
 npx tsc --noEmit
 ```
+
+**Local Development Note**: If you need to test with the database locally, use `vercel dev` instead of `npm run dev`. This connects to your Vercel Postgres database. Otherwise, `npm run dev` works for UI testing, but API calls will fail without database credentials.
 
 ## Database Setup
 
@@ -81,6 +88,14 @@ All API routes follow RESTful conventions:
 - `DELETE /api/tasks/[id]`: Delete task
 
 API routes are located in `app/api/[resource]/route.ts` files and use Next.js Route Handlers.
+
+**API Validation Pattern**: All POST/PATCH endpoints validate input before processing:
+- Check required fields (e.g., `station_id`, `title`)
+- Validate types and formats
+- Trim string inputs
+- Return 400 status with descriptive error messages for invalid input
+- Return 500 status for server errors
+- All endpoints use try/catch error handling
 
 ### Theme System
 
