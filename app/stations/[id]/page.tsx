@@ -17,6 +17,7 @@ export default function StationPage({
   const [station, setStation] = useState<Station | null>(null)
   const [selectedDate, setSelectedDate] = useState<string>('')
   const [loading, setLoading] = useState(true)
+  const [deletingId, setDeletingId] = useState<number | null>(null)
 
   useEffect(() => {
     // Set default date to tomorrow
@@ -74,6 +75,24 @@ export default function StationPage({
       }
     } catch (error) {
       console.error('Error updating task:', error)
+    }
+  }
+
+  async function handleDelete(taskId: number) {
+    if (!confirm('Delete this task?')) return
+    setDeletingId(taskId)
+    try {
+      const response = await fetch(`/api/tasks/${taskId}`, { method: 'DELETE' })
+      if (response.ok) {
+        fetchData()
+      } else {
+        alert('Failed to delete task')
+      }
+    } catch (error) {
+      console.error('Error:', error)
+      alert('Error deleting task')
+    } finally {
+      setDeletingId(null)
     }
   }
 
@@ -137,12 +156,20 @@ export default function StationPage({
             {tasks.map((task) => (
               <div
                 key={task.id}
-                className={`p-5 rounded-lg border-2 ${
+                className={`p-5 rounded-lg border-2 relative ${
                   task.priority === 'high'
                     ? 'border-[var(--warning)] bg-[var(--card)]'
                     : 'border-[var(--border)] bg-[var(--card)]'
                 }`}
               >
+                <button
+                  onClick={() => handleDelete(task.id)}
+                  disabled={deletingId === task.id}
+                  className="absolute top-3 right-3 p-2 text-[var(--danger)] hover:bg-[var(--danger)]/10 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  aria-label="Delete task"
+                >
+                  ×
+                </button>
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
