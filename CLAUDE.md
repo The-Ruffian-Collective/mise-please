@@ -109,6 +109,31 @@ The app supports dark/light themes via React Context (`lib/theme-context.tsx`). 
 - Strict mode enabled
 - All files use TypeScript (.ts/.tsx)
 
+### Next.js 15 Dynamic Routes
+
+Dynamic route parameters are async in Next.js 15. All dynamic route handlers must await params:
+
+```typescript
+// API routes with dynamic segments
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params  // Must await params
+  // ...
+}
+
+// Page components with dynamic segments
+export default async function Page({
+  params
+}: {
+  params: Promise<{ id: string }>
+}) {
+  const { id } = await params  // Must await params
+  // ...
+}
+```
+
 ### Date Handling
 
 - Dates are stored as `DATE` in Postgres (YYYY-MM-DD format)
