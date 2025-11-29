@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Task, Station } from '@/lib/types'
+import { Task, Station, UpdateTaskInput } from '@/lib/types'
+import TaskEditModal from '@/app/components/TaskEditModal'
 
 interface GroupedTasks {
   [stationName: string]: Task[]
@@ -16,6 +17,7 @@ export default function OverviewPage() {
   const [selectedDate, setSelectedDate] = useState<string>('')
   const [loading, setLoading] = useState(true)
   const [deletingId, setDeletingId] = useState<number | null>(null)
+  const [editingTask, setEditingTask] = useState<Task | null>(null)
 
   useEffect(() => {
     // Set default date to tomorrow
@@ -78,6 +80,31 @@ export default function OverviewPage() {
       alert('Error deleting task')
     } finally {
       setDeletingId(null)
+    }
+  }
+
+  async function handleSaveTask(taskId: number, updates: UpdateTaskInput) {
+    try {
+      const response = await fetch(`/api/tasks/${taskId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updates),
+      })
+
+      if (response.ok) {
+        fetchTasks()
+      } else {
+        const error = await response.json()
+        throw new Error(error.error || 'Failed to update task')
+      }
+    } catch (error) {
+      console.error('Error updating task:', error)
+      alert(
+        error instanceof Error ? error.message : 'Error updating task'
+      )
+      throw error
     }
   }
 
@@ -184,14 +211,23 @@ export default function OverviewPage() {
                               : 'border-[var(--border)]'
                           }`}
                         >
-                          <button
-                            onClick={() => handleDelete(task.id)}
-                            disabled={deletingId === task.id}
-                            className="absolute top-3 right-3 p-2 text-[var(--danger)] hover:bg-[var(--danger)]/10 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                            aria-label="Delete task"
-                          >
-                            ×
-                          </button>
+                          <div className="absolute top-3 right-3 flex gap-2">
+                            <button
+                              onClick={() => setEditingTask(task)}
+                              className="p-2 text-[var(--accent)] hover:bg-[var(--accent)]/10 rounded transition-colors"
+                              aria-label="Edit task"
+                            >
+                              ✎
+                            </button>
+                            <button
+                              onClick={() => handleDelete(task.id)}
+                              disabled={deletingId === task.id}
+                              className="p-2 text-[var(--danger)] hover:bg-[var(--danger)]/10 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                              aria-label="Delete task"
+                            >
+                              ×
+                            </button>
+                          </div>
                           <div className="flex items-start gap-3">
                             {task.priority === 'high' && (
                               <span className="px-2 py-1 text-sm font-semibold bg-[var(--warning)] text-white rounded">
@@ -237,6 +273,14 @@ export default function OverviewPage() {
           </div>
         )}
       </main>
+
+      <TaskEditModal
+        task={editingTask}
+        stations={stations}
+        isOpen={editingTask !== null}
+        onClose={() => setEditingTask(null)}
+        onSave={handleSaveTask}
+      />
     </div>
   )
 }
