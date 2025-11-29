@@ -103,85 +103,93 @@ export default function MEPPage({
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white">
       {/* Header - hidden in print */}
-      <header className="bg-[var(--card)] border-b border-[var(--border)] p-4 flex items-center justify-between print:hidden">
-        <h1 className="text-2xl font-bold">Mise en Place</h1>
-        <div className="flex gap-2">
-          <button
-            onClick={handlePrint}
-            className="px-4 py-2 bg-[var(--success)] hover:opacity-90 text-white rounded transition-opacity"
-          >
-            Print
-          </button>
-          <Link
-            href="/overview"
-            className="px-4 py-2 bg-[var(--card-hover)] hover:bg-[var(--border)] rounded transition-colors"
-          >
-            Back
-          </Link>
+      <header className="sticky top-0 z-40 border-b-2 border-black bg-white print:hidden">
+        <div className="container flex-between py-6">
+          <h1 className="text-5xl font-black">MISE EN PLACE</h1>
+          <div className="flex gap-3">
+            <button
+              onClick={handlePrint}
+              className="btn btn-primary btn-lg"
+            >
+              🖨️ Print
+            </button>
+            <Link
+              href="/overview"
+              className="btn btn-secondary text-sm"
+            >
+              ← Back
+            </Link>
+          </div>
         </div>
       </header>
 
       {/* Main content - print friendly */}
-      <main className="p-6 max-w-5xl mx-auto">
-        {/* Title */}
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold mb-2">Mise en Place</h1>
-          <p className="text-2xl">{targetDate && formatDate(targetDate)}</p>
+      <main className="section max-w-5xl mx-auto">
+        {/* Title - for print */}
+        <div className="mb-12 text-center print:mb-6">
+          <h1 className="text-6xl font-black mb-4 print:text-4xl">MISE EN PLACE</h1>
+          <p className="text-3xl font-black text-gray-700 print:text-2xl">
+            {targetDate && formatDate(targetDate)}
+          </p>
         </div>
 
         {/* Tasks grouped by station */}
-        <div className="space-y-8">
-          {Object.entries(groupedTasks)
-            .sort(([a], [b]) => a.localeCompare(b))
-            .map(([stationName, stationTasks]) => (
-              <div
-                key={stationName}
-                className="print-break-inside-avoid border-b-2 border-[var(--border)] pb-6 last:border-b-0"
-              >
-                <h2 className="text-2xl font-bold mb-4 uppercase tracking-wide">
-                  {stationName}
-                </h2>
+        {tasks.length === 0 ? (
+          <div className="text-center py-20">
+            <div className="text-6xl mb-6">🎯</div>
+            <h3 className="text-4xl font-black mb-4">No Tasks</h3>
+            <p className="text-lg text-gray-600">
+              No tasks scheduled for {targetDate && formatDate(targetDate)}
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-12 print:space-y-8">
+            {Object.entries(groupedTasks)
+              .sort(([a], [b]) => a.localeCompare(b))
+              .map(([stationName, stationTasks]) => (
+                <section
+                  key={stationName}
+                  className="print-break-inside-avoid border-b-2 border-black pb-8 print:pb-6 last:border-b-0"
+                >
+                  <h2 className="text-4xl font-black mb-6 print:text-2xl uppercase tracking-tight">
+                    {stationName}
+                  </h2>
 
-                {stationTasks.length === 0 ? (
-                  <p className="text-lg opacity-50 ml-4">No tasks</p>
-                ) : (
-                  <ul className="space-y-3 ml-4">
-                    {stationTasks.map((task) => (
-                      <li key={task.id} className="flex items-start gap-3">
-                        <span className="text-lg mt-1">•</span>
-                        <div className="flex-1">
-                          <p className="text-lg font-medium">
-                            {task.priority === 'high' && (
-                              <span className="inline-block px-2 py-1 mr-2 text-sm font-bold bg-[var(--warning)] text-white rounded">
-                                HIGH
-                              </span>
+                  {stationTasks.length === 0 ? (
+                    <p className="text-lg text-gray-500 ml-6">No tasks</p>
+                  ) : (
+                    <ul className="space-y-4 print:space-y-2 ml-6">
+                      {stationTasks.map((task) => (
+                        <li key={task.id} className="flex items-start gap-4">
+                          <span className="text-2xl mt-0 flex-shrink-0">✓</span>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xl font-bold print:text-lg">
+                              {task.priority === 'high' && (
+                                <span className="inline-block px-2 py-1 mr-2 text-sm font-black bg-yellow-400 text-black rounded print:bg-gray-300">
+                                  ⚡ HIGH
+                                </span>
+                              )}
+                              {task.title}
+                            </p>
+                            {task.details && (
+                              <p className="text-base text-gray-700 mt-2 ml-6 print:ml-0 print:text-sm whitespace-pre-wrap leading-relaxed">
+                                {task.details}
+                              </p>
                             )}
-                            {task.title}
-                          </p>
-                          {task.details && (
-                            <p className="text-base opacity-75 mt-1 ml-4 whitespace-pre-wrap">
-                              {task.details}
-                            </p>
-                          )}
-                          {task.created_by && (
-                            <p className="text-sm opacity-60 mt-1 ml-4">
-                              Added by: {task.created_by}
-                            </p>
-                          )}
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            ))}
-        </div>
-
-        {tasks.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-xl opacity-75">No tasks scheduled</p>
+                            {task.created_by && (
+                              <p className="text-sm text-gray-500 mt-1 ml-6 print:ml-0">
+                                — {task.created_by}
+                              </p>
+                            )}
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </section>
+              ))}
           </div>
         )}
       </main>
@@ -203,21 +211,24 @@ export default function MEPPage({
           }
 
           main {
-            max-width: 100% !important;
             padding: 1cm !important;
           }
 
           h1 {
-            font-size: 24pt !important;
+            font-size: 28pt !important;
           }
 
           h2 {
-            font-size: 18pt !important;
+            font-size: 20pt !important;
           }
 
           p,
           li {
-            font-size: 12pt !important;
+            font-size: 13pt !important;
+          }
+
+          section {
+            page-break-inside: avoid;
           }
         }
       `}</style>
