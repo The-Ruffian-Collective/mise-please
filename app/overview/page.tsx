@@ -139,11 +139,11 @@ export default function OverviewPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[var(--background)] transition-colors duration-300">
       {/* Header */}
-      <header className="sticky top-0 z-40 border-b-2 border-black bg-white">
+      <header className="sticky top-0 z-40 border-b-2 border-[var(--border)] bg-[var(--background)] transition-colors duration-300">
         <div className="container flex-between py-6">
-          <h1 className="text-5xl font-black">OVERVIEW</h1>
+          <h1 className="text-5xl font-black text-[var(--foreground)]">OVERVIEW</h1>
           <Link href="/" className="btn btn-secondary text-sm">
             ← Back Home
           </Link>
@@ -186,13 +186,13 @@ export default function OverviewPage() {
           {loading ? (
             <div className="text-center py-20">
               <div className="inline-block animate-spin text-6xl mb-4">⚙️</div>
-              <p className="text-xl font-semibold text-gray-600">Loading tasks...</p>
+              <p className="text-xl font-semibold text-[var(--text-muted)]">Loading tasks...</p>
             </div>
           ) : tasks.length === 0 ? (
             <div className="text-center py-20 card lg">
               <div className="text-6xl mb-6">🎯</div>
-              <h3 className="text-4xl font-black mb-4">No Tasks Yet</h3>
-              <p className="text-lg text-gray-600 mb-8">
+              <h3 className="text-4xl font-black mb-4 text-[var(--foreground)]">No Tasks Yet</h3>
+              <p className="text-lg text-[var(--text-muted)] mb-8">
                 No tasks scheduled for {formatDate(selectedDate)}
               </p>
               <Link href="/add" className="btn btn-primary btn-lg">
@@ -207,15 +207,15 @@ export default function OverviewPage() {
                   <section key={stationName}>
                     {/* Station Header */}
                     <div className="flex items-center gap-4 mb-6">
-                      <h3 className="text-4xl font-black">{stationName}</h3>
-                      <span className="text-2xl font-black text-gray-400">
+                      <h3 className="text-4xl font-black text-[var(--foreground)]">{stationName}</h3>
+                      <span className="text-2xl font-black text-[var(--text-muted)]">
                         {stationTasks.length}
                       </span>
                     </div>
 
                     {/* Station Tasks */}
                     {stationTasks.length === 0 ? (
-                      <div className="card lg text-center py-8 text-gray-500">
+                      <div className="card lg text-center py-8 text-[var(--text-muted)]">
                         <p className="text-lg">No tasks for this station</p>
                       </div>
                     ) : (
@@ -233,7 +233,7 @@ export default function OverviewPage() {
                             <div className="absolute top-4 right-4 flex gap-2">
                               <button
                                 onClick={() => setEditingTask(task)}
-                                className="p-2 text-2xl hover:bg-gray-200 rounded transition-colors"
+                                className="p-2 text-2xl hover:bg-[var(--card-hover)] rounded transition-colors"
                                 aria-label="Edit task"
                                 title="Edit"
                               >
@@ -259,16 +259,16 @@ export default function OverviewPage() {
                                   </span>
                                 )}
                               </div>
-                              <h4 className="text-2xl font-black mb-2">
+                              <h4 className="text-2xl font-black mb-2 text-[var(--foreground)]">
                                 {task.title}
                               </h4>
                               {task.details && (
-                                <p className="text-base text-gray-700 mb-3 whitespace-pre-wrap leading-relaxed">
+                                <p className="text-base text-[var(--text-secondary)] mb-3 whitespace-pre-wrap leading-relaxed">
                                   {task.details}
                                 </p>
                               )}
                               {task.created_by && (
-                                <p className="text-sm text-gray-500 font-medium">
+                                <p className="text-sm text-[var(--text-muted)] font-medium">
                                   by {task.created_by}
                                 </p>
                               )}

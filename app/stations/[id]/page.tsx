@@ -106,11 +106,11 @@ export default function StationPage({
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[var(--background)] transition-colors duration-300">
       {/* Header */}
-      <header className="sticky top-0 z-40 border-b-2 border-black bg-white">
+      <header className="sticky top-0 z-40 border-b-2 border-[var(--border)] bg-[var(--background)] transition-colors duration-300">
         <div className="container flex-between py-6">
-          <h1 className="text-5xl font-black">
+          <h1 className="text-5xl font-black text-[var(--foreground)]">
             {station?.name || 'STATION'}
           </h1>
           <Link href="/stations" className="btn btn-secondary text-sm">
@@ -124,7 +124,7 @@ export default function StationPage({
         <div className="container max-w-3xl">
           {/* Date Selector */}
           <div className="mb-12">
-            <label htmlFor="date" className="block text-lg font-black mb-3">
+            <label htmlFor="date" className="block text-lg font-black mb-3 text-[var(--foreground)]">
               SELECT DATE
             </label>
             <input
@@ -138,7 +138,7 @@ export default function StationPage({
 
           {/* Date Display */}
           {selectedDate && (
-            <h2 className="text-5xl font-black mb-12">
+            <h2 className="text-5xl font-black mb-12 text-[var(--foreground)]">
               {formatDate(selectedDate)}
             </h2>
           )}
@@ -147,13 +147,13 @@ export default function StationPage({
           {loading ? (
             <div className="text-center py-20">
               <div className="inline-block animate-spin text-6xl mb-4">⚙️</div>
-              <p className="text-xl font-semibold text-gray-600">Loading tasks...</p>
+              <p className="text-xl font-semibold text-[var(--text-muted)]">Loading tasks...</p>
             </div>
           ) : tasks.length === 0 ? (
             <div className="text-center py-20 card lg">
               <div className="text-6xl mb-6">🎯</div>
-              <h3 className="text-4xl font-black mb-4">No Tasks</h3>
-              <p className="text-lg text-gray-600 mb-8">
+              <h3 className="text-4xl font-black mb-4 text-[var(--foreground)]">No Tasks</h3>
+              <p className="text-lg text-[var(--text-muted)] mb-8">
                 No tasks for {station?.name} on {formatDate(selectedDate)}
               </p>
               <Link href="/add" className="btn btn-primary btn-lg">
@@ -195,20 +195,20 @@ export default function StationPage({
                       )}
 
                       {/* Title */}
-                      <h3 className="text-2xl font-black mb-2">
+                      <h3 className="text-2xl font-black mb-2 text-[var(--foreground)]">
                         {task.title}
                       </h3>
 
                       {/* Details */}
                       {task.details && (
-                        <p className="text-base text-gray-700 mb-3 whitespace-pre-wrap leading-relaxed">
+                        <p className="text-base text-[var(--text-secondary)] mb-3 whitespace-pre-wrap leading-relaxed">
                           {task.details}
                         </p>
                       )}
 
                       {/* Created By */}
                       {task.created_by && (
-                        <p className="text-sm text-gray-500 font-medium">
+                        <p className="text-sm text-[var(--text-muted)] font-medium">
                           by {task.created_by}
                         </p>
                       )}
@@ -220,7 +220,7 @@ export default function StationPage({
                       className={`min-w-16 min-h-16 w-16 h-16 flex items-center justify-center border-2 rounded-lg font-black text-2xl transition-all flex-shrink-0 ${
                         task.is_done
                           ? 'bg-green-500 border-green-500 text-white'
-                          : 'border-black bg-white hover:bg-green-50 hover:border-green-500'
+                          : 'border-[var(--border)] bg-[var(--background)] hover:bg-green-50 hover:border-green-500'
                       }`}
                       title={task.is_done ? 'Undo completion' : 'Mark as done'}
                     >
