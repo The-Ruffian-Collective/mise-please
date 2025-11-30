@@ -45,7 +45,7 @@ export async function initDatabase() {
 
 // Seed default stations
 export async function seedStations() {
-  const defaultStations = ['Larder', 'Hot', 'Pastry', 'Grill', 'Misc']
+  const defaultStations = ['Larder', 'Garnish', 'Pastry', 'Grill', 'Misc']
 
   try {
     for (const stationName of defaultStations) {

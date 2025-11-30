@@ -96,18 +96,18 @@ export default function MEPPage({
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-xl">Loading MEP...</p>
+      <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
+        <p className="text-xl text-[var(--foreground)]">Loading MEP...</p>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[var(--background)] transition-colors duration-300">
       {/* Header - hidden in print */}
-      <header className="sticky top-0 z-40 border-b-2 border-black bg-white print:hidden">
+      <header className="sticky top-0 z-40 border-b-2 border-[var(--border)] bg-[var(--background)] print:hidden transition-colors duration-300">
         <div className="container flex-between py-6">
-          <h1 className="text-5xl font-black">MISE EN PLACE</h1>
+          <h1 className="text-5xl font-black text-[var(--foreground)]">MISE EN PLACE</h1>
           <div className="flex gap-3">
             <button
               onClick={handlePrint}
@@ -129,8 +129,8 @@ export default function MEPPage({
       <main className="section max-w-5xl mx-auto">
         {/* Title - for print */}
         <div className="mb-12 text-center print:mb-6">
-          <h1 className="text-6xl font-black mb-4 print:text-4xl">MISE EN PLACE</h1>
-          <p className="text-3xl font-black text-gray-700 print:text-2xl">
+          <h1 className="text-6xl font-black mb-4 print:text-4xl text-[var(--foreground)]">MISE EN PLACE</h1>
+          <p className="text-3xl font-black text-[var(--text-secondary)] print:text-2xl">
             {targetDate && formatDate(targetDate)}
           </p>
         </div>
@@ -139,8 +139,8 @@ export default function MEPPage({
         {tasks.length === 0 ? (
           <div className="text-center py-20">
             <div className="text-6xl mb-6">🎯</div>
-            <h3 className="text-4xl font-black mb-4">No Tasks</h3>
-            <p className="text-lg text-gray-600">
+            <h3 className="text-4xl font-black mb-4 text-[var(--foreground)]">No Tasks</h3>
+            <p className="text-lg text-[var(--text-muted)]">
               No tasks scheduled for {targetDate && formatDate(targetDate)}
             </p>
           </div>
@@ -151,21 +151,21 @@ export default function MEPPage({
               .map(([stationName, stationTasks]) => (
                 <section
                   key={stationName}
-                  className="print-break-inside-avoid border-b-2 border-black pb-8 print:pb-6 last:border-b-0"
+                  className="print-break-inside-avoid border-b-2 border-[var(--border)] pb-8 print:pb-6 last:border-b-0"
                 >
-                  <h2 className="text-4xl font-black mb-6 print:text-2xl uppercase tracking-tight">
+                  <h2 className="text-4xl font-black mb-6 print:text-2xl uppercase tracking-tight text-[var(--foreground)]">
                     {stationName}
                   </h2>
 
                   {stationTasks.length === 0 ? (
-                    <p className="text-lg text-gray-500 ml-6">No tasks</p>
+                    <p className="text-lg text-[var(--text-muted)] ml-6">No tasks</p>
                   ) : (
                     <ul className="space-y-4 print:space-y-2 ml-6">
                       {stationTasks.map((task) => (
                         <li key={task.id} className="flex items-start gap-4">
-                          <span className="text-2xl mt-0 flex-shrink-0">✓</span>
+                          <span className="text-2xl mt-0 flex-shrink-0 text-[var(--foreground)]">✓</span>
                           <div className="flex-1 min-w-0">
-                            <p className="text-xl font-bold print:text-lg">
+                            <p className="text-xl font-bold print:text-lg text-[var(--foreground)]">
                               {task.priority === 'high' && (
                                 <span className="inline-block px-2 py-1 mr-2 text-sm font-black bg-yellow-400 text-black rounded print:bg-gray-300">
                                   ⚡ HIGH
@@ -174,12 +174,12 @@ export default function MEPPage({
                               {task.title}
                             </p>
                             {task.details && (
-                              <p className="text-base text-gray-700 mt-2 ml-6 print:ml-0 print:text-sm whitespace-pre-wrap leading-relaxed">
+                              <p className="text-base text-[var(--text-secondary)] mt-2 ml-6 print:ml-0 print:text-sm whitespace-pre-wrap leading-relaxed">
                                 {task.details}
                               </p>
                             )}
                             {task.created_by && (
-                              <p className="text-sm text-gray-500 mt-1 ml-6 print:ml-0">
+                              <p className="text-sm text-[var(--text-muted)] mt-1 ml-6 print:ml-0">
                                 — {task.created_by}
                               </p>
                             )}

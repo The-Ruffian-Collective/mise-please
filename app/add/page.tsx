@@ -82,11 +82,11 @@ export default function AddTaskPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[var(--background)] transition-colors duration-300">
       {/* Header */}
-      <header className="sticky top-0 z-40 border-b-2 border-black bg-white">
+      <header className="sticky top-0 z-40 border-b-2 border-[var(--border)] bg-[var(--background)] transition-colors duration-300">
         <div className="container flex-between py-6">
-          <h1 className="text-5xl font-black">ADD TASK</h1>
+          <h1 className="text-5xl font-black text-[var(--foreground)]">ADD TASK</h1>
           <Link href="/" className="btn btn-secondary text-sm">
             ← Back Home
           </Link>
@@ -129,7 +129,7 @@ export default function AddTaskPage() {
               <div>
                 <label
                   htmlFor="station"
-                  className="block text-lg font-black mb-3 text-black"
+                  className="block text-lg font-black mb-3 text-[var(--foreground)]"
                 >
                   Select Station *
                 </label>
@@ -151,7 +151,7 @@ export default function AddTaskPage() {
 
               {/* Title Field */}
               <div>
-                <label htmlFor="title" className="block text-lg font-black mb-3 text-black">
+                <label htmlFor="title" className="block text-lg font-black mb-3 text-[var(--foreground)]">
                   Task Title *
                 </label>
                 <input
@@ -167,7 +167,7 @@ export default function AddTaskPage() {
 
               {/* Details Field */}
               <div>
-                <label htmlFor="details" className="block text-lg font-black mb-3 text-black">
+                <label htmlFor="details" className="block text-lg font-black mb-3 text-[var(--foreground)]">
                   Details
                 </label>
                 <textarea
@@ -182,15 +182,15 @@ export default function AddTaskPage() {
 
               {/* Priority Toggle */}
               <div>
-                <label className="block text-lg font-black mb-3 text-black">Priority</label>
+                <label className="block text-lg font-black mb-3 text-[var(--foreground)]">Priority</label>
                 <div className="flex gap-4">
                   <button
                     type="button"
                     onClick={() => setPriority('normal')}
                     className={`flex-1 py-3 px-6 font-black text-center rounded-lg border-2 transition-all ${
                       priority === 'normal'
-                        ? 'bg-black text-white border-black'
-                        : 'bg-white text-black border-black hover:bg-gray-50'
+                        ? 'bg-[var(--foreground)] text-[var(--background)] border-[var(--foreground)]'
+                        : 'bg-[var(--background)] text-[var(--foreground)] border-[var(--border)] hover:bg-[var(--card-hover)]'
                     }`}
                   >
                     Normal
@@ -201,7 +201,7 @@ export default function AddTaskPage() {
                     className={`flex-1 py-3 px-6 font-black text-center rounded-lg border-2 transition-all ${
                       priority === 'high'
                         ? 'bg-yellow-400 text-black border-yellow-400'
-                        : 'bg-white text-black border-black hover:bg-yellow-50'
+                        : 'bg-[var(--background)] text-[var(--foreground)] border-[var(--border)] hover:bg-yellow-50'
                     }`}
                   >
                     ⚡ HIGH PRIORITY
@@ -211,7 +211,7 @@ export default function AddTaskPage() {
 
               {/* Name Field */}
               <div>
-                <label htmlFor="created-by" className="block text-lg font-black mb-3 text-black">
+                <label htmlFor="created-by" className="block text-lg font-black mb-3 text-[var(--foreground)]">
                   Chef Name
                 </label>
                 <input
@@ -238,7 +238,7 @@ export default function AddTaskPage() {
           </Card>
 
           {/* Helpful Text */}
-          <div className="mt-12 text-center text-gray-600">
+          <div className="mt-12 text-center text-[var(--text-muted)]">
             <p className="text-sm">
               Tasks are added to your prep list immediately and appear in the Overview and Station views.
             </p>
